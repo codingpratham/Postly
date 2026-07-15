@@ -13,14 +13,28 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(cuid())
-  name     String?
-  email    String  @unique
-  password String
-  token token[]
+  id                 String                   @id @default(cuid())
+  name               String?
+  email              String                   @unique
+  password           String
+  token              token[]
+  resetPasswords     PasswordResetToken[]
+  emailVerifications EmailVerificationToken[]
+
+  isVerified Boolean   @default(false)
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+}
+
+model EmailVerificationToken {
+  id String @id @default(cuid())
+  token String @unique
+  expiresAt DateTime
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
 }
 
 model token {
@@ -32,3 +46,13 @@ model token {
   expiresAt DateTime
 }
 
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expiresAt DateTime
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
