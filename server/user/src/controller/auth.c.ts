@@ -52,6 +52,7 @@ export const register = async (
         name,
         email,
         password: hashedPassword,
+        
       },
     });
 
