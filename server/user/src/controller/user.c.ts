@@ -372,3 +372,53 @@ export const SearchUser = async (req:Request , res:Response) =>{
        }) 
     }
 }
+
+export const SuggestedUsertoFollow = async (req:Request , res:Response) =>{
+    const userId = req.userId
+
+    if(!userId){
+        res.status(211).json({
+            message:"User not found"
+        })
+        return
+    }
+
+    try {
+        const user = await prisma.user.findMany({
+            where:{
+                NOT:{
+                    id:userId
+                }
+            }
+        })
+
+        res.status(200).json({
+            message:"Suggested users fetched successfully",
+            user
+        })
+    } catch (error) {
+       console.error(error)
+       res.status(500).json({
+        message:"Server error"
+       })  
+    }
+}
+
+export const avatarPic = async (req:Request , res:Response) =>{
+    const userId = req.userId
+
+    if(!userId){
+        res.status(211).json({
+            message:"User not found"
+        })
+    }
+
+    const file = req.file
+
+    if(!file){
+        res.status(211).json({
+            message:"File not found"
+        })
+    }
+
+}
