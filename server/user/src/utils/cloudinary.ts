@@ -1,8 +1,7 @@
-import { v2 as cloudinaryClient } from "cloudinary"
+import { v2 as cloudinary } from "cloudinary";
 
-cloudinaryClient.config({
-    url:process.env.CLOUDINARY_URL,
-    secure:true
-})
+cloudinary.config({
+  Cloudinary_url: process.env.CLOUDINARY_URL,
+});
 
-export const cloudinary = cloudinaryClient
+export default cloudinary;

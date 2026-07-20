@@ -408,7 +408,7 @@ export const avatarPic = async (req:Request , res:Response) =>{
     const userId = req.userId
 
     if(!userId){
-        res.status(211).json({
+        return res.status(211).json({
             message:"User not found"
         })
     }
@@ -416,9 +416,33 @@ export const avatarPic = async (req:Request , res:Response) =>{
     const file = req.file
 
     if(!file){
-        res.status(211).json({
+        return res.status(211).json({
             message:"File not found"
         })
     }
+
+    try {
+        const user = await prisma.user.update({
+            where:{
+                id:userId
+            },
+            data:{
+                avatarPic:file.path
+            }
+        })
+
+        res.status(200).json({
+            message:"Avatar updated successfully",
+            user
+        })
+
+
+    } catch (error) {
+        console.error(error)
+       res.status(500).json({
+        message:"Server error"
+       }) 
+    }
+
 
 }
